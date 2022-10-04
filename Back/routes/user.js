@@ -2,7 +2,7 @@
 const express = require('express');
 // Création Routeurs 
 const router = express.Router();
-// possible raterlimiter
+// possible raterlimiter pour limiter requete client
 
 // Importation Controller "user"
 const userCtrl = require('../controllers/user');
