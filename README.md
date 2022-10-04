@@ -6,6 +6,7 @@ Lien vers le repo front-end d'origine :
 https://github.com/OpenClassrooms-Student-Center/Web-Developer-P6
 
 Installation :
+
 1.Depuis le fichier FRONT > 
 `npm install`
 `ng serve` ou `npm start`
@@ -13,6 +14,7 @@ Installation :
 2.Depuis le fichier BACK >
 `npm install`
 `nodemon server` 
+
  & Dependences : 
 - [x] express:  `npm install --save express`
 - [x] mongoose:  `npm install --save mongoose`
@@ -31,11 +33,15 @@ Installation :
 
 3.Parametrer DOTENV :
 * Creer fichier .env dans le dossier BACK
-`PORT = YOUR_PORT_HERE`
-`AUTHORIZED_ORIGIN = "http://localhost:****"`
-`MONGO_DB = mongodb+srv://"USER_NAME":"YOUR_PASSWORD"@clusterocr.enzcoye.mongodb.net/?retryWrites=true&w=majority`
-`TOKEN_KEY = YOUR_SECRET_TOKEN_KEY_HERE`
-`CRYPTO_MAIL = "*"`
+> `PORT = YOUR_PORT_HERE`
+
+> `AUTHORIZED_ORIGIN = "http://localhost:****"`
+
+> `MONGO_DB = mongodb+srv://"USER_NAME":"YOUR_PASSWORD"@clusterocr.enzcoye.mongodb.net/?retryWrites=true&w=majority`
+
+> `TOKEN_KEY = YOUR_SECRET_TOKEN_KEY_HERE`
+
+> `CRYPTO_MAIL = "*"`
 
 
 /**/
