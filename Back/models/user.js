@@ -2,17 +2,21 @@
 const mongoose = require('mongoose');
 // & Unique-Validator
 const uniqueValidator = require('mongoose-unique-validator');
-// & mongodb errors
+
 /*const mongoErrors = require('mongodb-errors');*/
 
-//Schéma de données Mongoose
+//Schéma de données Mongoose (Schema user)
 const userSchema = mongoose.Schema({
-    email: { type: String, required: true, unique: true },
+    email: { type: String,
+            required: true,
+            unique: true,
+    },
     password: { type: String, required: true }
 });
 
 
 /*userSchema.plugin(mongoErrors);*/
+
 // 1usr = 1adress@
 userSchema.plugin(uniqueValidator);
 
