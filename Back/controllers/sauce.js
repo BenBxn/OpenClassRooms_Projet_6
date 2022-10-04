@@ -7,7 +7,6 @@ const fs = require("fs");
 /*// Importation Package jsonwebtoken
 const jwt = require('jsonwebtoken');*/
 
-
 // Ajout création sauce /* Save */ 
 exports.createSauce = (req, res, next) => {
     //Objet
@@ -16,42 +15,44 @@ exports.createSauce = (req, res, next) => {
     delete sauceObject._id;
     //Conversion objet en chaine
     const sauce = new Sauce({
-        ...sauceObject,
+        ...sauceObject, //récupèrer le segment de base de l'URL de notre serveur
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
     });
     //Enregister
     sauce.save()
     .then(() => 
         res.status(201).json({ message: "Sauce enregistrée" }))
-    .catch((error) =>
-        res.status(400).json({ error }));
+        .catch((error) => {
+            console.log("Aucune sauce enregistrée")
+            res.status(404).json({ error });
+        });
 };
 
 // Recuperer information 1 sauce /* findOne() */
 exports.getOneSauce = (req, res, next) => {
-    Sauce.findOne({
-        _id: req.params.id,
+    Sauce.findOne({ 
+        _id: req.params.id, 
     })
     .then((sauce) => {
         res.status(200).json(sauce);
+        /*console.log(sauce)*/
     })
     .catch((error) => {
-        res.status(404).json({
-        error: error,
-        });
+        console.log("erreur getonesauce")
+        res.status(404).json({ error });
     });
 };
 
 //Recuperer information Toutes sauces /* find() */
 exports.getAllSauce = (req, res, next) => {
-    Sauce.find()
+    Sauce.find() /*Sans argument pour Allsauce*/
     .then((sauces) => {
         res.status(200).json(sauces);
+        /*console.log(sauces)*/
     })
     .catch((error) => {
-        res.status(400).json({
-            error: error,
-        });
+        console.log("erreur getallsauce")
+        res.status(404).json({ error });
     });
 };
 
@@ -76,7 +77,7 @@ exports.modifySauce = (req, res, next) => {
                     { _id: req.params.id },
                     { ...sauceObject, _id: req.params.id }
                 )
-                    .then(() => res.status(200).json({ message: "Sauce modifiée" }))
+                    .then(() => res.status(201).json({ message: "Sauce modifiée" }))
                     .catch((error) => res.status(400).json({ error }));
             });
         })
@@ -89,7 +90,7 @@ exports.modifySauce = (req, res, next) => {
             { _id: req.params.id },
             { ...sauceObject, _id: req.params.id }
         )
-        .then(() => res.status(200).json({ message: "Sauce modifiée" }))
+        .then(() => res.status(201).json({ message: "Sauce modifiée" }))
         .catch((error) => res.status(400).json({ error }));
         }
 };
@@ -125,7 +126,7 @@ exports.like = (req, res, next) => {
             .then((sauce) => {
                 //Si user à déjà like ou dislike 
                 if (sauce.usersDisliked.includes(req.body.userId) || sauce.usersLiked.includes(req.body.userId)) {
-                    res.status(401).json({ message: 'Opération non autorisée !'});
+                    res.status(401).json({ message: 'Opération non valide'});
                 } else {
                     Sauce.updateOne({ _id: req.params.id }, {
                         //Insère userId dans tableau usersLiked
@@ -146,7 +147,7 @@ exports.like = (req, res, next) => {
             .then((sauce) => {
                 //Si user à déjà like ou dislike 
                 if (sauce.usersDisliked.includes(req.body.userId) || sauce.usersLiked.includes(req.body.userId)) {
-                    res.status(401).json({ message: 'Opération non autorisée !'});
+                    res.status(401).json({ message: 'Opération non valide'});
                 } else {
                     Sauce.updateOne({ _id: req.params.id }, {
                         //Insèrer userId dans tableau usersLiked 
@@ -173,7 +174,7 @@ exports.like = (req, res, next) => {
                         //Retirer like
                         $inc: { likes: -1 },
                     })
-                        .then(() => res.status(200).json({ message: '"J\'aime" retiré !' }))
+                        .then(() => res.status(200).json({ message: '"J\'aime" retiré' }))
                         .catch((error) => res.status(400).json({ error }))
                 };
                 //si user est dans le tableau usersDisliked
@@ -184,7 +185,7 @@ exports.like = (req, res, next) => {
                         //Retirer dislike
                         $inc: { dislikes: -1 },
                     })
-                        .then(() => res.status(200).json({ message: '"Je n\'aime pas" retiré !' }))
+                        .then(() => res.status(200).json({ message: '"Je n\'aime pas" retiré' }))
                         .catch((error) => res.status(400).json({ error }))
                 };
             })
