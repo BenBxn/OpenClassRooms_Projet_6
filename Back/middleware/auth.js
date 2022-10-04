@@ -3,6 +3,9 @@
 // Importation Package jsonwebtoken /*verifier token auth*/
 const jwt = require('jsonwebtoken');
 
+/*const mongooseError = require('mongoose-error');*/ 
+
+//Import Dotenv
 require('dotenv').config();
 
 //Export Middleware
@@ -15,18 +18,21 @@ module.exports = (req, res, next) => {
         // Recuperer userId Token
         const userId = decodedToken.userId;
         //Reintegrer requête comme clé d'authentification
-        /*req.auth = {userId: userId}; */
+        req.auth = {userId: userId};
         //Si userID dans requete different > error
         if (req.body.userId && req.body.userId !== userId) {
             console.log("UserID non valide");
             throw "UserID non valide";  
         }
+        //Sinon ok next()
         else {
         next();
         } 
     }
     catch(error) {
-        /*res.status(403).json({error})*/
-        res.status(401).json({ error: error | "Requête non authentifiée" });
+        res.status(401).json({error});
+        /*mongooseError( 
+            res.status(401).json({ error: error | '[ ERREUR ] : ECHEC Authentification '})
+        );*/
     }
 };

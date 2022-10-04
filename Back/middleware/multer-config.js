@@ -18,10 +18,28 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, callback) => {
         const name = file.originalname.split(' ').join('_'); //nom d'origne & "espace" remplacé par "_"
-        const extension = MIME_TYPES[file.mimetype]; //extention fichier (jpg,png,gig)
-        callback(null, name + Date.now() + '.' + extension); //+ date timestamp 
+        const extension = MIME_TYPES[file.mimetype]; //extention fichier (jpg,png,gif)
+        if(
+            file.mimetype === "image/jpeg" ||
+            file.mimetype === "image/png" ||
+            file.mimetype === "image/jpg" ||
+            file.mimetype === "image/gif"
+        )
+        //nom avec date
+        {
+            callback(null, name + Date.now() + '.' + extension); //+ date timestamp 
+        
+        //Sinon le fichier ne correspond pas et sera deplacé  
+        } else {
+            console.log("fichier non conforme");
+            callback(
+                null,
+                "ImagesBan/" + req.auth.userId + "_" + name + Date.now() + "." + extension
+            );
+        }
+        
     }
 });
 
 //Export multer-config
-module.exports = multer({storage: storage}).single('image'); /*single*/
+module.exports = multer({storage: storage}).single('image'); /*single : fichier unique*/
